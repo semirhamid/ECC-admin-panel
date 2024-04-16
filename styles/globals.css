@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --active-color: #69BE94;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.sidebar-bg {
+  background: hsla(148, 41%, 93%, 1);
+
+  background: linear-gradient(90deg, hsla(148, 41%, 93%, 1) 0%, hsla(148, 41%, 93%, 1) 47%, hsla(148, 41%, 93%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(148, 41%, 93%, 1) 0%, hsla(148, 41%, 93%, 1) 47%, hsla(148, 41%, 93%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(148, 41%, 93%, 1) 0%, hsla(148, 41%, 93%, 1) 47%, hsla(148, 41%, 93%, 1) 100%);
+
+}
+.sidebar__menu-item:hover{
+  background-color: white;
+  
+}
+.sidebar__menu-item:hover svg{
+  color: var(--active-color);
+}
+.sidebar__menu-item:hover path{
+  color: var(--active-color);
+  stroke: var(--active-color);
+}
+.sidebar__menu-item:hover span{
+  color: var(--active-color);
+}
+.sidebar__menu-item:hover .icon-fill{
+  fill: var(--active-color);
+  stroke: none;
+}
+.sidebar--active {
+  background-color: white;
+  
+}
+.sidebar--active svg{
+  color: var(--active-color);
+}
+.sidebar--active path{
+  color: var(--active-color);
+  stroke: var(--active-color);
+}
+.sidebar--active span{
+  color: var(--active-color);
+}
+.sidebar--active .icon-fill{
+  fill: var(--active-color);
+  stroke: none;
+}

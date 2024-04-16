@@ -1,0 +1,18 @@
+.dented-rectangle {
+    position: relative;
+    border: 2px solid #69BE94;
+    border-radius: 1rem;
+    padding: 10px;
+    text-align: center;
+  }
+.e-content-cells{
+  background-color: transparent !important;
+
+}
+.e-card{
+  border: none !important;
+}
+.e-card-wrapper{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}

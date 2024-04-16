@@ -1,1 +1,1 @@
-# ECC-admin-panel
+# ecc-admin

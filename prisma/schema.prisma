@@ -1,0 +1,153 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "linux-arm64-openssl-1.1.x", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id                  Int                  @id @default(autoincrement())
+  email               String               @unique
+  password            String
+  name                String
+  phoneNumber         String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  profileImageUrl     String?
+  accountStatus       Boolean              @default(true)
+  role                String               @default("user")
+  assignedAftersales  Aftersale[]          @relation("AssignedTo")
+  createdAftersales   Aftersale[]          @relation("CreatedBy")
+  passwordResetTokens PasswordResetToken[]
+  pushTokens          PushToken[]
+  assignedSSLForms    SSLForm[]            @relation("AssignedTo")
+  createdSSLForms     SSLForm[]            @relation("CreatedBy")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, code])
+}
+
+model Aftersale {
+  id                         Int          @id @default(autoincrement())
+  createdById                Int
+  assignedToId               Int
+  status                     String
+  clientDetail               String
+  eccJobReference            String
+  installationAddress        String?
+  signature                  String?
+  hardwareWarranty           DateTime?
+  installationWarranty       DateTime?
+  payToChargeProvider        String?
+  serviceMaintenanceContract DateTime?
+  softwareProvider           String?
+  assignedto                 User         @relation("AssignedTo", fields: [assignedToId], references: [id])
+  createdby                  User         @relation("CreatedBy", fields: [createdById], references: [id])
+  compliances                Compliance[]
+  files                      File[]
+
+  @@index([createdById], map: "idx_aftersale_createdBy")
+  @@index([assignedToId], map: "idx_aftersale_assignedTo")
+}
+
+model Compliance {
+  id                  Int       @id @default(autoincrement())
+  serialNumber        String
+  compliant           Boolean
+  chargePointLocation String
+  aftersaleId         Int
+  installationDate    DateTime?
+  makeAndModel        String
+  manufacturerName    String
+  softwareVersion     String?
+  aftersale           Aftersale @relation(fields: [aftersaleId], references: [id])
+
+  @@index([aftersaleId], map: "idx_compliance_aftersale")
+}
+
+model SSLForm {
+  id                        Int      @id @default(autoincrement())
+  createdById               Int
+  assignedToId              Int
+  status                    String
+  address1                  String
+  address2                  String?
+  address3                  String?
+  address4                  String?
+  city                      String
+  country                   String
+  postCode                  String
+  noAcPoints                Int
+  noDcPoints                Int
+  makeOfChargePoint         String
+  ampsPerCp                 String
+  kwPerCp                   String
+  wallMountSingle           Int
+  wallMountDual             Int
+  floorMountSingle          Int
+  floorMountDual            Int
+  phaseType                 String
+  mainsFuseSize             String
+  mainsIsolation            String
+  earthingSetup             String
+  mobileSignal              String
+  signalStrength            String
+  consumerUnitMake          String
+  consumerUnitModel         String
+  totalSpareWays            String
+  totalAmpsInUse            String
+  cableSizeRead             String
+  cableLengthTotal          String
+  totalCableRuns            String
+  internalCableAttachment   String
+  dataCableRun              String
+  cableRunDescription       String
+  selectOptions             String
+  gwLength                  String
+  gwWidth                   String
+  gwDepth                   String
+  ductingSize               String
+  ductingLength             String
+  groundWorksDescription    String
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  installationEarthingSetup String?
+  files                     File[]
+  assignedTo                User     @relation("AssignedTo", fields: [assignedToId], references: [id])
+  createdBy                 User     @relation("CreatedBy", fields: [createdById], references: [id])
+}
+
+model File {
+  id          Int        @id @default(autoincrement())
+  filename    String
+  url         String
+  sslFormId   Int?
+  aftersaleId Int?
+  aftersale   Aftersale? @relation(fields: [aftersaleId], references: [id])
+  sslForm     SSLForm?   @relation(fields: [sslFormId], references: [id])
+
+  @@index([sslFormId], map: "idx_file_sslForm")
+  @@index([aftersaleId], map: "idx_file_aftersale")
+}
+
+model PushToken {
+  id                     Int      @id @default(autoincrement())
+  token                  String   @unique
+  userId                 Int
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  enablePushNotification Boolean  @default(true)
+  user                   User     @relation(fields: [userId], references: [id])
+}
