@@ -8,7 +8,7 @@ To run this project locally, follow these steps:
 
 1. Clone this repository:
    ```
-   git clone <repository_url>
+   git clone https://github.com/semirhamid/ECC-admin-panel.git
    ```
 
 2. Install dependencies using npm:
@@ -38,7 +38,7 @@ To run this project locally, follow these steps:
 This project is not currently open for contributions as it is in a private repository. However, suggestions and feedback are welcome.
 
 ## License
-This project is licensed under the [License Name] License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the Apache License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Contact
 For inquiries or support, please contact [Semir Hamid] at [semhamirid@gmail.com].
